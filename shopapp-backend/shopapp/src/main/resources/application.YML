@@ -1,0 +1,31 @@
+server:
+  port: 8088
+spring:
+  datasource:
+#    Timezone UTC == GMT++, VietNam GMT+7, lên server để +0 để chạy đc quốc tế
+#    khi về client thì sẽ gửi thời gian về
+    url: jdbc:mysql://localhost:3306/shopapp?useSSL=false&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password:
+  jpa: #java persistence api
+#    ta có thể nhìn các câu lệnh sql hiện ra
+    show-sql: true
+    hibernate:
+#      những cái câu lênh tạo bảng, tạo thực thể trên java string sẽ không tự tạo table
+#      bên trong database, ta sẽ thao tác qua SQL thay vì java string
+#      nếu đội dev lớn mà mỗi người đều thay đổi database thông qua java string thì sẽ
+#      rất nguy hiểm
+      ddl-auto: none
+    properties:
+      hibernate:
+#      driver kết nối với database
+      dialect: org.hibernate.dialect.MySQL8Dialect
+      format_sql: true
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+# tạo tính nhất quán nếu muốn thay v1 -> v2 thì không cần phải thay đổi nhiều chỗ
+api:
+  prefix: api/v1
