@@ -14,6 +14,8 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
+
 public class Role {
     @Id //primary key
     // No same instance --> when add a new instance --> auto increment

@@ -13,6 +13,8 @@ import java.sql.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+
 public class User  extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,10 +38,10 @@ public class User  extends BaseEntity {
     private Date dateOfBirth;
 
     @Column(name="facebook_account_id")
-    private int facebookAccountId;
+    private Long facebookAccountId;
 
     @Column(name = "google_account_id")
-    private int googleAccountId;
+    private Long googleAccountId;
 
     @ManyToOne
     @JoinColumn(name = "role_id")

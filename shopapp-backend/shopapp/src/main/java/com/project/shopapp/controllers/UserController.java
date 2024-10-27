@@ -3,7 +3,10 @@ package com.project.shopapp.controllers;
 
 import com.project.shopapp.dtos.UserDTO;
 import com.project.shopapp.dtos.UserLoginDTO;
+import com.project.shopapp.services.IUserService;
+import com.project.shopapp.services.UserService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -16,8 +19,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("${api.prefix}/users")
+@RequiredArgsConstructor
 public class UserController
 {
+    private final IUserService userService;
+
+
     @PostMapping("/register")
         public ResponseEntity<?> createUser(@Valid @RequestBody UserDTO userDTO
             , BindingResult result){
@@ -43,8 +50,7 @@ public class UserController
     // it will alert an error (500)
     @PostMapping("/login")
     public ResponseEntity<String> login(@Valid @RequestBody UserLoginDTO userLoginDTO){
-        return ResponseEntity.ok("some token");
+        String token = userService.login(userLoginDTO.getPhoneNumber(), userLoginDTO.getPassword());
+        return ResponseEntity.ok(token);
     }
-
-
 }

@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
+
 public class Token {
     @Id //primary key
     // No same instance --> when add a new instance --> auto increment

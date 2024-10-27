@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Data
 
@@ -43,6 +43,11 @@ public class UserDTO
     @JsonProperty("date_of_birth")
     private Date dateOfBirth;
 
+    @JsonProperty("facebook_account_id")
+    private Long facebookAccountId;
+
+    @JsonProperty("google_account_id")
+    private Long googleAccountId;
 
     @JsonProperty("role_id")
     @NotNull(message = "Role ID is required")

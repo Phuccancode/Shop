@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Order {
     @Id //primary key
     // No same instance --> when add a new instance --> auto increment
