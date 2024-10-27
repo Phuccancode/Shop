@@ -2,7 +2,12 @@ package com.project.shopapp.controllers;
 
 import com.project.shopapp.dtos.ProductDTO;
 import java.nio.file.Paths;
+
+import com.project.shopapp.dtos.ProductImageDTO;
+import com.project.shopapp.models.Product;
+import com.project.shopapp.services.IProductService;
 import jakarta.validation.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +26,10 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("${api.prefix}/products")
+@RequiredArgsConstructor
 public class ProductController {
+    private final IProductService productService;
+
     @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createProduct(@Valid @ModelAttribute ProductDTO productDTO,
 //                                                @RequestPart("file") MultipartFile file,
@@ -35,6 +43,8 @@ public class ProductController {
                         .toList();
                 return ResponseEntity.badRequest().body(errorMessages);
             }
+
+            Product newProduct = productService.createProduct(productDTO);
             // file is optional
             List<MultipartFile> files = productDTO.getFiles();
             files = files == null ? new ArrayList<MultipartFile>(): files;
@@ -54,6 +64,10 @@ public class ProductController {
 
                 }
                 String filename = storeFile(file);
+                productService.createProductImage(newProduct.getId(),
+                        ProductImageDTO.builder()
+                                .imageUrl(filename)        
+                                .build());
                 //Lưu vào bảng product_images
 //                {
 //                    "name": "Macbook Air 15 inch 2024",

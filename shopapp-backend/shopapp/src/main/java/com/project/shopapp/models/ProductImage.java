@@ -8,7 +8,7 @@ import lombok.*;
 @Entity
 //Bảng trong db là categories mà class chúng ta lại là Category
 // --> dùng @Table để ánh xạ
-@Table(name="categories")
+@Table(name="product_images")
 @Data //toString
 @Getter
 @Setter

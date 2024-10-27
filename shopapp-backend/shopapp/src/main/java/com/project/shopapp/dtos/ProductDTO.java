@@ -25,7 +25,7 @@ public class ProductDTO {
     private String description;
 
     @JsonProperty("category_id") // do ten bien o day khac voi trong mysql
-    private String categoryId;
+    private Long categoryId;
 
     private List<MultipartFile> files;
 
