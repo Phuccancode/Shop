@@ -9,10 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @Data
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Builder
 public class ProductDTO {
     @NotBlank(message = "Title is required")
     @Size(min = 3, max=200, message = "Title must be between 3 and 200 characters")
@@ -27,6 +24,6 @@ public class ProductDTO {
     @JsonProperty("category_id") // do ten bien o day khac voi trong mysql
     private Long categoryId;
 
-    private List<MultipartFile> files;
+//    private List<MultipartFile> files;
 
 }
