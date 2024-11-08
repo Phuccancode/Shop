@@ -6,12 +6,13 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 //Xác định nó là thực thể
 @Entity
 //Bảng trong db là categories mà class chúng ta lại là Category
 // --> dùng @Table để ánh xạ
-@Table(name= "order")
+@Table(name= "orders")
 @Data //toString
 @Getter
 @Setter
@@ -44,7 +45,7 @@ public class Order {
     private String note;
 
     @Column(name ="order_date")
-    private LocalDateTime orderDate;
+    private Date orderDate;
 
     @Column(name="status")
     private String status;

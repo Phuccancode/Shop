@@ -8,7 +8,7 @@ import javax.management.relation.Role;
 import java.sql.Date;
 
 @Entity
-@Table(name ="user")
+@Table(name ="users")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -32,7 +32,8 @@ public class User  extends BaseEntity {
     @Column(name = "password", length = 200, nullable = false)
     private String password;
 
-    private boolean active;
+    @Column(name = "is_active")
+    private boolean isActive;
 
     @Column(name="date_of_birth")
     private Date dateOfBirth;
