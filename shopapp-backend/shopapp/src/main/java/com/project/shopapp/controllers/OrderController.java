@@ -3,10 +3,8 @@ package com.project.shopapp.controllers;
 import com.project.shopapp.dtos.OrderDTO;
 import com.project.shopapp.responses.OrderResponse;
 import com.project.shopapp.services.IOrderService;
-import com.project.shopapp.services.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -36,10 +34,21 @@ public class OrderController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @GetMapping("/{user_id}")
+    @GetMapping("/user/{user_id}")
     public ResponseEntity<?> getOrders(@PathVariable("user_id") Long userId){
         try{
-            return ResponseEntity.ok("get order "+userId+" successfully");
+            List<OrderResponse>  orderResponses = orderService.findByUserId(userId);
+            return ResponseEntity.ok(orderResponses);
+        }
+        catch(Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getOrder(@PathVariable("id") Long orderId){
+        try{
+
+            return ResponseEntity.ok(orderService.getOrder(orderId));
         }
         catch(Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -49,12 +58,23 @@ public class OrderController {
     //admin works
     public ResponseEntity<?> updateOrder(@PathVariable Long id,
                                          @Valid @RequestBody OrderDTO orderDTO){
-        return ResponseEntity.ok("update successfully");
+        try{
+            OrderResponse orderResponse = orderService.updateOrder(id, orderDTO);
+            return ResponseEntity.ok(orderResponse);
+        }
+        catch(Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteOrder(@Valid @PathVariable Long id){
         // soft delete -> active = false
-        return ResponseEntity.ok("delete order successfully");
+        try {
+            orderService.deleteOrder(id);
+            return ResponseEntity.ok("Order deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
     //TO DO Get: get list order from user id
     //method getOders

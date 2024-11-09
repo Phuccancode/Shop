@@ -16,6 +16,7 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -43,30 +44,49 @@ public class OrderService implements IOrderService{
         order.setActive(true);
         order.setShippingDate(shippingDate);
         orderRepository.save(order);
-        modelMapper.typeMap(Order.class, OrderResponse.class)
-                .addMappings(mapper -> mapper.skip(OrderResponse::setUserId));
+        return OrderResponse.fromOrder(order);
+    }
+
+    @Override
+    public OrderResponse getOrder(Long orderId) throws Exception{
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new DataNotFoundException("Order not found with id "+orderId));
+        return OrderResponse.fromOrder(order);
+    }
+
+    @Override
+    public OrderResponse updateOrder(Long id, OrderDTO orderDTO) throws Exception {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Order not found with id "+id));
+        User user = userRepository.findById(orderDTO.getUserId())
+                .orElseThrow(() -> new DataNotFoundException("User not found with id "+orderDTO.getUserId()));
+        modelMapper.typeMap(OrderDTO.class, Order.class)
+                .addMappings(mapper -> mapper.skip(Order::setId));
+        modelMapper.map(orderDTO, order);
+        order.setUser(user);
+        orderRepository.save(order);
+        return OrderResponse.fromOrder(order);
+    }
+
+    @Override
+    public void deleteOrder(Long orderId) throws DataNotFoundException {
+        //soft delete
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new DataNotFoundException("Order not found with id "+orderId));
+        order.setActive(false);
+        orderRepository.save(order);
+    }
+
+    @Override
+    public List<OrderResponse> findByUserId(Long userId) {
+        List<Order> orders = orderRepository.findByUserId(userId);
+        List<OrderResponse> orderResponses = orders
+                .stream()
+                .map(OrderResponse::fromOrder)
+                .collect(Collectors.toList());
         //model mapper phai match all fields, neu co 1 filed khong match thi phai skip,
         // khong skip thi gia tri tra ve se bi null het
-        return modelMapper.map(order, OrderResponse.class);
-    }
+        return orderResponses;
 
-    @Override
-    public OrderResponse getOrder(Long orderId) {
-        return null;
-    }
-
-    @Override
-    public OrderResponse updateOrder(Long id, OrderDTO orderDTO) {
-        return null;
-    }
-
-    @Override
-    public void deleteOrder(Long orderId) {
-
-    }
-
-    @Override
-    public List<OrderResponse> getAllOrders(Long userId) {
-        return null;
     }
 }

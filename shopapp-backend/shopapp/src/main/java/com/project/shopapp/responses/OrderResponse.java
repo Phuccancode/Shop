@@ -1,9 +1,11 @@
 package com.project.shopapp.responses;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.project.shopapp.models.Order;
 import com.project.shopapp.models.User;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.modelmapper.ModelMapper;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -51,4 +53,14 @@ public class OrderResponse {
 
     private Boolean active;//thuộc về admin
 
+    public static OrderResponse fromOrder(Order order){
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.typeMap(Order.class, OrderResponse.class)
+                .addMappings(mapper -> mapper.skip(OrderResponse::setUserId));
+        OrderResponse orderResponse = modelMapper.map(order, OrderResponse.class);
+        orderResponse.setUserId(order.getUser().getId());
+        //model mapper phai match all fields, neu co 1 filed khong match thi phai skip,
+        // khong skip thi gia tri tra ve se bi null het
+        return orderResponse;
+    }
 }
