@@ -163,7 +163,7 @@ public class ProductController {
         productService.deleteProduct(id);
         return ResponseEntity.ok("Product deleted with id " + id);
     }
-    //@PostMapping("/generateFakeProducts")
+    @PostMapping("/generateFakeProducts")
     private ResponseEntity<?> generateFakeProducts(){
         Faker faker = new Faker();
         for(int i =0; i<1_000_000;i++){

@@ -3,6 +3,8 @@ package com.project.shopapp.controllers;
 
 import com.project.shopapp.dtos.UserDTO;
 import com.project.shopapp.dtos.UserLoginDTO;
+import com.project.shopapp.exceptions.DataNotFoundException;
+import com.project.shopapp.models.User;
 import com.project.shopapp.services.IUserService;
 import com.project.shopapp.services.UserService;
 import jakarta.validation.Valid;
@@ -39,18 +41,23 @@ public class UserController
             if(!userDTO.getPassword().equals(userDTO.getRetypePassword())){
                 return ResponseEntity.badRequest().body("Password does not match");
             }
+            User user = userService.createUser(userDTO);
+            return ResponseEntity.ok(user);
         }
         catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-
-        return ResponseEntity.ok("Register successfully");
     }
     //No need to validate because u can input everything, if phone number and password are wrong
     // it will alert an error (500)
     @PostMapping("/login")
     public ResponseEntity<String> login(@Valid @RequestBody UserLoginDTO userLoginDTO){
-        String token = userService.login(userLoginDTO.getPhoneNumber(), userLoginDTO.getPassword());
-        return ResponseEntity.ok(token);
+        try {
+            String token = userService.login(userLoginDTO.getPhoneNumber(), userLoginDTO.getPassword());
+            return ResponseEntity.ok(token);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 }

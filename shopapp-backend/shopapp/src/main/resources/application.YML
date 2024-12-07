@@ -7,7 +7,7 @@ spring:
     url: jdbc:mysql://localhost:3306/shopapp?useSSL=false&serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password:
+    password: 123456
   jpa: #java persistence api
 #    ta có thể nhìn các câu lệnh sql hiện ra
     show-sql: true
@@ -29,3 +29,7 @@ spring:
 # tạo tính nhất quán nếu muốn thay v1 -> v2 thì không cần phải thay đổi nhiều chỗ
 api:
   prefix: api/v1
+jwt:
+  expiration: 2592000
+#30 days = 30*24*60*60 = 2592000
+  secret: Iloveyoutothemoonandbacktrinhtranphuongtuan

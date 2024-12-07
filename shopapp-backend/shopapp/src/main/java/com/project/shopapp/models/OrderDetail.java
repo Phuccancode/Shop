@@ -1,6 +1,6 @@
 package com.project.shopapp.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.*;
 

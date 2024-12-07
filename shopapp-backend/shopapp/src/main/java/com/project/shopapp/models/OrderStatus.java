@@ -8,6 +8,4 @@ public class OrderStatus {
     public static final String PROCESSING   ="shipped";
     public static final String SHIPPED      ="delivered";
     public static final String DELIVERED    ="cancelled";
-
-
 }
